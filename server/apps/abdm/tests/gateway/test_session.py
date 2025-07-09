@@ -11,6 +11,11 @@ class TestABDMSessionView(APITestCase):
         # self.assertIn(response.status_code, [status.HTTP_201_CREATED, status.HTTP_500_INTERNAL_SERVER_ERROR]) 
 
     def test_get_abdm_session(self):
+        """
+        Test retrieving an ABDM session via the 'get_abdm_session' API endpoint.
+        
+        Asserts that the response status code is 200 (OK), 404 (Not Found), or 500 (Internal Server Error).
+        """
         url = reverse('get_abdm_session')
         response = self.client.get(url)
         print('RESPONSE:', response.status_code, response.data)

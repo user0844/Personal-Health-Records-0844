@@ -14,7 +14,10 @@ class GetABDMSessionView(APIView):
 
     def get(self, request, *args, **kwargs):
         """
-        Handles the GET request to retrieve the current session.
+        Retrieve the current ABDM session.
+        
+        Returns:
+            Response: Session data with HTTP 200 OK if found, or an error message with HTTP 404 Not Found if no session exists.
         """
         try:
             session_data = abdm_session.get_session()
@@ -33,7 +36,9 @@ class CreateABDMSessionView(APIView):
 
     def post(self, request, *args, **kwargs):
         """
-        Handles the POST request to create a new session.
+        Handle a POST request to create a new ABDM session.
+        
+        On success, returns the created session data with HTTP 201 status. If an ABDMExternalException occurs, returns detailed error information with the appropriate status code or HTTP 502. For any other exception, returns a generic error message with HTTP 500 status.
         """
         try:
             session_data = abdm_session.create_session()
@@ -61,7 +66,10 @@ class RefreshABDMSessionView(APIView):
 
     def post(self, request, *args, **kwargs):
         """
-        Handles the POST request to refresh the session using the refresh token.
+        Refreshes the ABDM session using the current session's refresh token.
+        
+        Returns:
+            Response: Refreshed session data with HTTP 200 OK on success, or an error message with HTTP 404 Not Found if the refresh fails.
         """
         try:
             session = abdm_session.get_session()

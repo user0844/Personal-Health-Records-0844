@@ -21,6 +21,9 @@ class ABDMSession:
     """
 
     def __init__(self):
+        """
+        Initializes the ABDMSession instance with configuration values from Django settings, including client credentials and gateway endpoints.
+        """
         self.client_id = settings.ABDM_CONFIG['CLIENT_ID']
         self.client_secret = settings.ABDM_CONFIG['CLIENT_SECRET']
         self.x_cm_id = settings.ABDM_CONFIG['X_CM_ID']
@@ -31,13 +34,10 @@ class ABDMSession:
 
     def get_session(self) -> SessionData:
         """
-        Retrieves the session from the cache, proactively refreshing or creating a new session if needed.
-
+        Retrieve a valid ABDM session from the cache, refreshing or creating a new session if the current one is near expiry.
+        
         Returns:
-            SessionData: The session data.
-
-        Raises:
-            Exception: If the session is not found in the cache.
+            SessionData: The current valid session data, either from cache or newly obtained.
         """
         session: SessionData = cache.get(CACHE_KEY)
 
@@ -57,13 +57,13 @@ class ABDMSession:
 
     def create_session(self) -> SessionData:
         """
-        Creates a new session with the ABDM gateway and caches it.
-
+        Create a new session with the ABDM gateway using client credentials and cache the session data.
+        
         Returns:
-            SessionData: The newly created session data.
-
+            SessionData: The session data containing access and refresh tokens, expiry information, and token type.
+        
         Raises:
-            requests.exceptions.RequestException: If the API call fails.
+            ABDMExternalException: If the gateway returns an unexpected status code or the request fails.
         """
         url = f"{self.gateway_base_url}{self.session_endpoint}"
 
@@ -119,16 +119,16 @@ class ABDMSession:
 
     def refresh_session(self, refresh_token: str) -> SessionData:
         """
-        Refreshes the session using the refresh token and caches the new session data.
-
-        Args:
-            refresh_token (str): The refresh token from the cached session.
-
+        Refreshes the ABDM session using the provided refresh token and updates the cached session data.
+        
+        Parameters:
+            refresh_token (str): The refresh token to use for obtaining a new session.
+        
         Returns:
-            SessionData: The refreshed session data.
-
+            SessionData: The refreshed session data containing new access and refresh tokens.
+        
         Raises:
-            requests.exceptions.RequestException: If the API call fails.
+            ABDMExternalException: If the API call to the ABDM gateway fails or returns an unexpected status code.
         """
         url = f"{self.gateway_base_url}{self.session_endpoint}"
         
