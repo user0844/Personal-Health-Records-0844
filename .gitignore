@@ -1,0 +1,31 @@
+# Documentation
+/docs/
+
+# macOS Finder
+.DS_Store
+**/.DS_Store
+
+# Editor/IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# System files
+._*
+Thumbs.db
+
+# Environment files
+.env
+**/.env
+.env.*
+**/.env.*
+
+# Log files
+*.log
+logs/
+
+# Backup files
+*~
+*.swp
+*.swo
+.*.swp 
