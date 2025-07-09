@@ -5,7 +5,11 @@ import sys
 
 
 def main():
-    """Run administrative tasks."""
+    """
+    Executes Django administrative commands using the command-line interface.
+    
+    Sets the default Django settings module and attempts to import Django's management command executor. Raises an ImportError with a helpful message if Django is not installed or the environment is not properly configured.
+    """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
     try:
         from django.core.management import execute_from_command_line
